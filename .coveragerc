@@ -1,0 +1,12 @@
+[run]
+source = pyauthservice, users, oauth
+branch = True
+omit =
+    */tests/*
+    */venv/*
+    manage.py
+    settings/*.py
+
+[report]
+show_missing = True
+fail_under = 70
