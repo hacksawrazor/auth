@@ -32,6 +32,13 @@ def logout_view(request):
         return JsonResponse({"status": "ok", "message": "logged out"})
     return JsonResponse({"error": "Invalid method"}, status=405)
 
+def user_logout_view(request):
+    if request.user.is_authenticated:
+        logout(request)
+        messages.success(request, 'You have been logged out.')
+    return redirect('/login/')
+
+
 def user_login_view(request):
     if request.user.is_authenticated:
         return redirect('/dashboard/' if request.GET.get('next') is None else request.GET.get('next'))
