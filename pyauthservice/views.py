@@ -51,6 +51,6 @@ def user_login_view(request):
             next_url = request.POST.get('next') or request.GET.get('next')
             if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
                 return redirect(next_url)
-            return redirect(next_url or '/')
+            return render(request, 'users/login_success.html')
         messages.error(request, 'Invalid credentials.')
     return render(request, 'users/login.html')
