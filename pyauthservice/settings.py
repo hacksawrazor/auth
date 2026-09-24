@@ -237,7 +237,6 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "oauth.authentication.SSOJWTAuthentication",
         "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
 }
 
