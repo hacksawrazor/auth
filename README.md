@@ -188,6 +188,8 @@ pip freeze > requirements.txt
 
 ---
 
+- **Session / OIDC:** native `/login/`, `/logout/`, `/auth/me/`, `/health/`; no DRF JWT; session handled by Django auth + OAuth2/OIDC provider.
+
 ## Authentication
 
 - **OAuth2:**  
