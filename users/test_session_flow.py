@@ -9,9 +9,9 @@ class LoginSessionFlowTests(TestCase):
 
     def test_login_post_valid_redirects(self):
         # Uses self.user from setUp (create_user)
-        response = self.client.post('/login/', {'username': 'testuser', 'password': 'testpass', 'next': '/dashboard/'})
+        response = self.client.post('/login/', {'username': 'testuser', 'password': 'testpass', 'next': '/home/'})
         self.assertEqual(response.status_code, 302)
-        self.assertIn('/dashboard/', response.url)
+        self.assertIn('/home/', response.url)
 
     def test_login_post_invalid_shows_error(self):
         response = self.client.post('/login/', {'username': 'bad', 'password': 'bad'})
@@ -25,7 +25,7 @@ class LoginSessionFlowTests(TestCase):
 
     def test_logout_redirects_to_login(self):
         # Login first to have session
-        self.client.post('/login/', {'username': 'admin', 'password': 'admin'})
+        self.client.post('/login/', {'username': 'testuser', 'password': 'testpass'})
         response = self.client.get('/logout/')
         self.assertEqual(response.status_code, 302)
         self.assertIn('/login/', response.url)
