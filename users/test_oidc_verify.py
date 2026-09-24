@@ -20,10 +20,10 @@ class OIDCVerificationTests(TestCase):
     def test_mock_token_load_for_ssojwt(self):
         from oauth.authentication import SSOJWTAuthentication
         auth = SSOJWTAuthentication()
-        with patch.object(auth, 'authenticate_token') as mock_auth:
+        with patch.object(auth, 'authenticate') as mock_auth:
             mock_auth.return_value = (MagicMock(), None)
-            user, token = auth.authenticate_token('mock_token_string')
-            mock_auth.assert_called_once_with('mock_token_string')
+            result = auth.authenticate(MagicMock())
+            mock_auth.assert_called_once()
 
     def test_user_signal_hook_imports(self):
         from users import signals

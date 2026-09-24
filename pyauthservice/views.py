@@ -73,4 +73,6 @@ def user_login_view(request):
         'theme_color': settings.LOGIN_THEME_COLOR,
         'logo_url': settings.LOGIN_LOGO_URL,
         'page_title': settings.LOGIN_PAGE_TITLE,
+        'success': '',
+        'error': '',
     })
