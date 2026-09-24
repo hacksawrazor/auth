@@ -29,7 +29,8 @@ jobs:
         run: |
           docker run --rm pyauthservice:test bash -c "
             pip install -r requirements.txt &&
-            DB_ENGINE=sqlite3 DEBUG=True SECRET_KEY=dummy-test-secret-key OIDC_ISS_ENDPOINT=https://auth.hacksaw.in OIDC_PRIVATE_KEY_PATH=oidc_private.pem python manage.py test users.test_login_view users.test_session_flow users.test_oidc_verify
+            openssl genrsa 512 > /tmp/oidc_test_key.pem 2>/dev/null &&
+            DB_ENGINE=sqlite3 DEBUG=True SECRET_KEY=dummy-test-secret-key OIDC_ISS_ENDPOINT=https://auth.hacksaw.in OIDC_PRIVATE_KEY_PATH=/tmp/oidc_test_key.pem python manage.py test users.test_login_view users.test_session_flow users.test_oidc_verify
           "
 
       - name: Check code quality
