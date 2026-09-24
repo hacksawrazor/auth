@@ -104,7 +104,8 @@ INSTALLED_APPS = [
     'oauth',
     'rest_framework',
     'corsheaders',
-    'virtual_permissions'
+    'virtual_permissions',
+    'axes',
 ]
 
 MIDDLEWARE = [
