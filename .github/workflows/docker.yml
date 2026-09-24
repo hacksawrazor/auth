@@ -60,10 +60,10 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/pyauthservice:latest
-            ghcr.io/${{ github.repository_owner }}/pyauthservice:v${{ github.run_number }}
+            ghcr.io/${{ github.repository_owner }}/auth:latest
+            ghcr.io/${{ github.repository_owner }}/auth:v${{ github.run_number }}
 
       - name: Create deployment notification
         run: |
           echo "✅ Deployment successful"
-          echo "Image: ghcr.io/${{ github.repository_owner }}/pyauthservice:v${{ github.run_number }}"
+          echo "Image: ghcr.io/${{ github.repository_owner }}/auth:v${{ github.run_number }}"
