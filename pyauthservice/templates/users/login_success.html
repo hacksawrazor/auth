@@ -7,12 +7,12 @@
 <style>
   :root { --primary-color: {{ theme_color }}; }
   * { box-sizing: border-box; }
-  body { font-family: system-ui, -apple-system, sans-serif; background: #f3f4f6; margin: 0; padding: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-  .card { background: #fff; padding: 2rem; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.08); width: 100%; max-width: 420px; text-align: center; }
-  h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-  p { color: #374151; margin-bottom: 1.5rem; }
-  .btn { display: inline-block; padding: 0.6rem 1.25rem; background: #4f46e5; color: #fff; text-decoration: none; border-radius: 0.5rem; font-weight: 600; }
-  .btn:hover { background: #4338ca; }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); margin: 0; padding: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .card { background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); padding: 2.5rem 2rem; border-radius: 1.25rem; box-shadow: 0 24px 48px rgba(0,0,0,0.06), 0 8px 16px rgba(0,0,0,0.04); width: 100%; max-width: 400px; text-align: center; border: 1px solid rgba(0,0,0,0.04); }
+  h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 0.75rem; color: #111827; }
+  p { color: #6b7280; margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.55; }
+  .btn { display: inline-block; padding: 0.6rem 1.25rem; background: var(--primary-color); color: #fff; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: transform 0.15s ease, box-shadow 0.15s ease; }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 </style>
 </head>
 <body>
