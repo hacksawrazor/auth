@@ -8,3 +8,4 @@ certifi>=2024.2.2
 gunicorn>=21.2.0
 pytest>=7
 PyJWT>=2
+django-axes>=5
