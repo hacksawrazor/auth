@@ -1,17 +1,23 @@
-name: Build & Deploy Application - OCI
+name: Deploy Image to OCI
 
 on:
   workflow_dispatch:
+    inputs:
+      image-tag:
+        description: Image tag to deploy
+        required: true
+        default: latest
 
 permissions:
   contents: read
-  packages: write
+  packages: read
 
 jobs:
   deploy:
-    uses: hacksawrazor/ci-cd/.github/workflows/deploy-docker-oci.yml@main
+    uses: hacksawrazor/ci-cd/.github/workflows/deploy-docker-oci-existing.yml@main
     with:
       image-name: '${{ github.repository }}'
+      image-tag: ${{ inputs.image-tag }}
       deploy-path: '/opt/apps/auth'
       use-sudo: true
     secrets:

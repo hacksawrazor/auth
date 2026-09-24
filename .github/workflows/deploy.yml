@@ -1,4 +1,4 @@
-name: Deploy Pre-built Image to OCI
+name: Deploy Image to EC2
 
 on:
   workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
       deploy-path: '/opt/apps/auth'
       use-sudo: true
     secrets:
-      SSH_HOST: ${{ secrets.OCI_SERVER_IP }}
-      SSH_USER: ${{ secrets.OCI_SERVER_USER }}
-      SSH_KEY: ${{ secrets.OCI_SSH_PRIVATE_KEY }}
+      SSH_HOST: ${{ secrets.SERVER_HOST_EC2 }}
+      SSH_USER: ${{ secrets.SERVER_USER_EC2 }}
+      SSH_KEY: ${{ secrets.SERVER_SSH_KEY_EC2 }}
       INDIVIDUAL_SECRETS_JSON: ${{ toJson(vars) }}
