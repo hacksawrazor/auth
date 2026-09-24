@@ -127,7 +127,7 @@ pip freeze > requirements.txt
 - **User Management:**  
   - `GET /api/users/` — List users  
     ```sh
-    curl -H "Authorization: Bearer <oidc_access_token>" https://domain/api/users/
+    curl -H "Authorization: OAuth2 <oidc_access_token>" https://domain/api/users/
     ```
   - `POST /api/users/` — Create user  
     ```sh
@@ -145,24 +145,24 @@ pip freeze > requirements.txt
 
   - `GET /api/users/<id>/` — Retrieve user  
     ```sh
-    curl -H "Authorization: Bearer <oidc_access_token>" https://domain/api/users/1/
+    curl -H "Authorization: OAuth2 <oidc_access_token>" https://domain/api/users/1/
     ```
   - `PUT/PATCH /api/users/<id>/` — Update user  
     ```sh
     curl -X PATCH https://domain/api/users/1/ \
-      -H "Authorization: Bearer <oidc_access_token>" \
+      -H "Authorization: OAuth2 <oidc_access_token>" \
       -H "Content-Type: application/json" \
       -d '{"first_name": "UpdatedName"}'
     ```
   - `DELETE /api/users/<id>/` — Delete user  
     ```sh
     curl -X DELETE https://domain/api/users/1/ \
-      -H "Authorization: Bearer <access_token>"
+      -H "Authorization: OAuth2 <access_token>"
     ```
 
   - `GET /auth/me/` — Get current authenticated user's info  
     ```sh
-    curl -H "Authorization: Bearer <oidc_access_token>" https://domain/auth/me/
+    curl -H "Authorization: OAuth2 <oidc_access_token>" https://domain/auth/me/
     ```
     > Returns the authenticated user's details.
 
