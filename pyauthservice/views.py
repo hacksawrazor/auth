@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.utils.http import url_has_allowed_host_and_scheme
@@ -47,7 +48,11 @@ def user_login_view(request):
         next_url = request.GET.get('next')
         if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
             return redirect(next_url)
-        return render(request, 'users/login_success.html')
+        return render(request, 'users/login_success.html', {
+            'theme_color': settings.LOGIN_THEME_COLOR,
+            'logo_url': settings.LOGIN_LOGO_URL,
+            'page_title': settings.LOGIN_PAGE_TITLE,
+        })
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -57,6 +62,15 @@ def user_login_view(request):
             next_url = request.POST.get('next') or request.GET.get('next')
             if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
                 return redirect(next_url)
-            return render(request, 'users/login_success.html')
+            return render(request, 'users/login_success.html', {
+                'theme_color': settings.LOGIN_THEME_COLOR,
+                'logo_url': settings.LOGIN_LOGO_URL,
+                'page_title': settings.LOGIN_PAGE_TITLE,
+            })
         messages.error(request, 'Invalid credentials.')
-    return render(request, 'users/login.html', {'next': request.GET.get('next') or ''})
+    return render(request, 'users/login.html', {
+        'next': request.GET.get('next') or '',
+        'theme_color': settings.LOGIN_THEME_COLOR,
+        'logo_url': settings.LOGIN_LOGO_URL,
+        'page_title': settings.LOGIN_PAGE_TITLE,
+    })

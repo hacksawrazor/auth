@@ -290,4 +290,8 @@ AXES_COOLOFF_TIME = 1  # hour
 AXES_RESET_ON_SUCCESS = True
 AXES_LOCKOUT_TEMPLATE = 'users/login.html'
 
+LOGIN_THEME_COLOR = env('LOGIN_THEME_COLOR', default='#4f46e5')
+LOGIN_LOGO_URL = env('LOGIN_LOGO_URL', default='')
+LOGIN_PAGE_TITLE = env('LOGIN_PAGE_TITLE', default='Login | Auth Service')
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
