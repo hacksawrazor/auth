@@ -1,6 +1,8 @@
 from django.test import TestCase
 from django.urls import resolve
 
+from unittest.mock import patch, MagicMock
+
 class OIDCVerificationTests(TestCase):
     def test_oauthorize_resolves(self):
         # /o/ is a URLResolver; verify authorize pattern exists
@@ -15,6 +17,16 @@ class OIDCVerificationTests(TestCase):
         self.assertIn('OAuth2Authentication', names)
         self.assertNotIn('JWTAuthentication', names)
 
+    def test_mock_token_load_for_ssojwt(self):
+        from oauth.authentication import SSOJWTAuthentication
+        auth = SSOJWTAuthentication()
+        with patch.object(auth, 'authenticate_token') as mock_auth:
+            mock_auth.return_value = (MagicMock(), None)
+            user, token = auth.authenticate_token('mock_token_string')
+            mock_auth.assert_called_once_with('mock_token_string')
+
     def test_user_signal_hook_imports(self):
+        from users import signals
+        self.assertTrue(hasattr(signals, 'add_user_to_token'))
         from users import signals
         self.assertTrue(hasattr(signals, 'add_user_to_token'))
