@@ -10,10 +10,6 @@ permissions:
 
 jobs:
   deploy:
-    env:
-      SECRET_KEY: dummy-test-secret-key
-      OIDC_ISS_ENDPOINT: https://auth.hacksaw.in
-      OIDC_PRIVATE_KEY_PATH: /tmp/oidc_test_key.pem
     uses: hacksawrazor/ci-cd/.github/workflows/deploy-docker-ghcr.yml@main
     with:
       aws-region: 'eu-north-1'
