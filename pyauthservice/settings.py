@@ -175,6 +175,11 @@ else:
     if POSTGRES_SSLMODE == 'verify-full':
         DATABASES['default']['OPTIONS']['sslrootcert'] = certifi.where()
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'axes.backends.AxesStandaloneBackend',
+]
+
 AUTH_USER_MODEL = 'users.User'
 
 LOGIN_URL = '/login/'
