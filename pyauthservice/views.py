@@ -54,14 +54,7 @@ def user_logout_view(request):
 
 def user_login_view(request):
     if request.user.is_authenticated:
-        next_url = request.GET.get('next')
-        if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
-            return redirect(next_url)
-        return render(request, 'users/login_success.html', {
-            'theme_color': settings.LOGIN_THEME_COLOR,
-            'logo_url': settings.LOGIN_LOGO_URL,
-            'page_title': settings.LOGIN_PAGE_TITLE,
-        })
+        return redirect('/home/')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
