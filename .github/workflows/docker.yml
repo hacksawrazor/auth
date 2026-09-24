@@ -29,7 +29,7 @@ jobs:
         run: |
           docker run --rm pyauthservice:test bash -c "
             pip install -r requirements.txt &&
-            DB_ENGINE=sqlite3 DEBUG=True python manage.py test users.test_login_view users.test_session_flow users.test_oidc_verify
+            DB_ENGINE=sqlite3 DEBUG=True SECRET_KEY=dummy-test-secret-key python manage.py test users.test_login_view users.test_session_flow users.test_oidc_verify
           "
 
       - name: Check code quality
