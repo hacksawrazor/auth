@@ -3,7 +3,7 @@ from django.urls import include, path
 from django.views.generic import RedirectView
 from oauth2_provider import urls as oauth2_urls
 from users import urls as users_urls
-from .views import login_view, logout_view, health, user_login_view, user_logout_view
+from .views import health, user_login_view, user_logout_view
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/login/', permanent=False), name='home'),
@@ -12,8 +12,6 @@ urlpatterns = [
     path('api/', include(users_urls)),
     path('logout/', user_logout_view, name='user_logout'),
     path('login/', user_login_view, name='user_login'),
-    path('api/login/', login_view, name='api_login'),
-    path('api/logout/', logout_view, name='api_logout'),
     path('health/', health, name='health'),
 ]
 

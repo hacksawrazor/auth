@@ -1,6 +1,6 @@
 # PyAuthService
 
-A Django-based authentication service providing SSO (Single Sign-On) and user management APIs, supporting both OAuth2 and JWT authentication.
+A Django-based authentication service providing SSO (Single Sign-On) and user management APIs, supporting OAuth2.
 
 ---
 
@@ -8,7 +8,7 @@ A Django-based authentication service providing SSO (Single Sign-On) and user ma
 
 - Custom user model
 - User management API (CRUD)
-- OAuth2 and JWT authentication support
+- OAuth2 authentication
 - Django admin interface for user and OAuth application management
 - Health check endpoint
 
@@ -127,7 +127,7 @@ pip freeze > requirements.txt
 - **User Management:**  
   - `GET /api/users/` — List users  
     ```sh
-    curl -H "Authorization: Bearer <access_token>" https://domain/api/users/
+    curl -H "Authorization: Bearer <oidc_access_token>" https://domain/api/users/
     ```
   - `POST /api/users/` — Create user  
     ```sh
@@ -145,12 +145,12 @@ pip freeze > requirements.txt
 
   - `GET /api/users/<id>/` — Retrieve user  
     ```sh
-    curl -H "Authorization: Bearer <access_token>" https://domain/api/users/1/
+    curl -H "Authorization: Bearer <oidc_access_token>" https://domain/api/users/1/
     ```
   - `PUT/PATCH /api/users/<id>/` — Update user  
     ```sh
     curl -X PATCH https://domain/api/users/1/ \
-      -H "Authorization: Bearer <access_token>" \
+      -H "Authorization: Bearer <oidc_access_token>" \
       -H "Content-Type: application/json" \
       -d '{"first_name": "UpdatedName"}'
     ```
@@ -162,23 +162,9 @@ pip freeze > requirements.txt
 
   - `GET /auth/me/` — Get current authenticated user's info  
     ```sh
-    curl -H "Authorization: Bearer <access_token>" https://domain/auth/me/
+    curl -H "Authorization: Bearer <oidc_access_token>" https://domain/auth/me/
     ```
     > Returns the authenticated user's details.
-
-- **JWT Authentication:**  
-  - `POST /api/token/` — Obtain JWT token  
-    ```sh
-    curl -X POST https://domain/api/token/ \
-      -H "Content-Type: application/json" \
-      -d '{"username": "youruser", "password": "yourpassword"}'
-    ```
-  - `POST /api/token/refresh/` — Refresh JWT token  
-    ```sh
-    curl -X POST https://domain/api/token/refresh/ \
-      -H "Content-Type: application/json" \
-      -d '{"refresh": "<your_refresh_token>"}'
-    ```
 
 - **OAuth2:**  
   - `/o/` — OAuth2 endpoints (see [django-oauth-toolkit docs](https://django-oauth-toolkit.readthedocs.io/en/latest/))
@@ -203,12 +189,6 @@ pip freeze > requirements.txt
 ---
 
 ## Authentication
-
-- **JWT:**  
-  Obtain a token via `/api/token/` and use it in the `Authorization` header:  
-  ```
-  Authorization: Bearer <access_token>
-  ```
 
 - **OAuth2:**  
   Standard OAuth2 flows are available at `/o/`.
@@ -265,7 +245,7 @@ Create a `.env` file in your project root (same directory as `manage.py`) with t
 | `ALLOWED_HOSTS`       | Additional comma-separated hostnames for production |
 | `CSRF_TRUSTED_ORIGINS` | Additional comma-separated HTTPS origins for CSRF |
 | `CORS_ALLOWED_ORIGINS` | Additional comma-separated frontend origins for CORS |
-| `OIDC_ISS_ENDPOINT`  | Auth service domain url passed with jwt          |
+| `OIDC_ISS_ENDPOINT`  | Auth service domain url passed with OIDC token          |
 | `OIDC_RSA_PRIVATE_KEY` | Inline OIDC RSA private key in PEM format      |
 | `OIDC_PRIVATE_KEY_PATH` | Path to an OIDC RSA private key PEM file      |
 
