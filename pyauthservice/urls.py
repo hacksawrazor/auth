@@ -10,7 +10,7 @@ from rest_framework_simplejwt.views import (
 from .views import login_view, logout_view, health, user_login_view, user_logout_view
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/admin/', permanent=False), name='home'),
+    path('', RedirectView.as_view(url='/login/', permanent=False), name='home'),
     path('admin/', admin.site.urls),
     path('o/', include(oauth2_urls)),
     path('api/', include(users_urls)),

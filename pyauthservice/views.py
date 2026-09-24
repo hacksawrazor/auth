@@ -41,7 +41,7 @@ def user_logout_view(request):
 
 def user_login_view(request):
     if request.user.is_authenticated:
-        return redirect('/dashboard/' if request.GET.get('next') is None else request.GET.get('next'))
+        return redirect(request.GET.get('next') or '/')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -51,6 +51,6 @@ def user_login_view(request):
             next_url = request.POST.get('next') or request.GET.get('next')
             if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
                 return redirect(next_url)
-            return redirect('/dashboard/')
+            return redirect(next_url or '/')
         messages.error(request, 'Invalid credentials.')
     return render(request, 'users/login.html')
