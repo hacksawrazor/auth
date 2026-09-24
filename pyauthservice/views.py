@@ -6,7 +6,34 @@ from django.contrib import messages
 
 # To-do: add proper health check and request scope.
 def health(request):
-    return JsonResponse({"status": "ok"})
+    from django.db import connection
+    from django.conf import settings
+    db_ok = False
+    oidc_ok = False
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            db_ok = True
+    except Exception:
+        pass
+    try:
+        # Verify OIDC private key load path exists / settings configured
+        from pathlib import Path
+        pem_path = settings.BASE_DIR / 'oidc_private.pem'
+        if settings.OAUTH2_PROVIDER.get('OIDC_RSA_PRIVATE_KEY') is not None:
+            oidc_ok = True
+        elif settings.OAUTH2_PROVIDER.get('OIDC_ISS_ENDPOINT') and pem_path.exists():
+            oidc_ok = True
+        else:
+            oidc_ok = False
+    except Exception:
+        oidc_ok = False
+    status = "ok" if (db_ok and oidc_ok) else "degraded"
+    return JsonResponse({
+        "status": status,
+        "db": db_ok,
+        "oidc_config": oidc_ok,
+    })
 
 def user_logout_view(request):
     if request.user.is_authenticated:
