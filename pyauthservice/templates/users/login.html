@@ -30,16 +30,20 @@
   button { width: 100%; padding: 0.7rem; background: var(--primary-color); color: #fff; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.15s ease, transform 0.15s ease; }
   button:hover { background: #4338ca; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
   .logo { max-width: 120px; width: 72px; height: 72px; display: block; margin: 0 auto 1.25rem; filter: drop-shadow(0 2px 8px rgba(167,139,250,0.35)); }
+  .form-top-accent { height: 4px; width: 100%; background: linear-gradient(90deg, var(--primary-color), #a78bfa); border-radius: 2px 2px 0 0; margin-bottom: 1.5rem; }
+  .left-decoration { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.08; background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.4) 0%, transparent 60%); }
 </style>
 </head>
 <body>
 <div class="split" role="main" aria-label="Login form">
-  <div class="left" aria-label="Branding">
-    <h2>Hacksaw</h2>
+  <div class="left" aria-label="Branding" style="position:relative;">
+    <div class="left-decoration" aria-hidden="true"></div>
+    <h2>Hacksaw Auth</h2>
     <p>Sign in with a session, not a token graveyard.</p>
   </div>
   <div class="right">
     <div style="width:100%;max-width:360px;">
+      <div class="form-top-accent" aria-hidden="true"></div>
       {% if logo_url %}<img src="{{ logo_url }}" alt="Logo" class="logo" aria-label="App logo">{% endif %}
       <h1>Sign in</h1>
       <p class="subtitle" style="color:#6b7280;margin-bottom:1.25rem;font-size:0.95rem;">Access your account</p>
