@@ -294,4 +294,8 @@ LOGIN_THEME_COLOR = env('LOGIN_THEME_COLOR', default='#4f46e5')
 LOGIN_LOGO_URL = env('LOGIN_LOGO_URL', default='')
 LOGIN_PAGE_TITLE = env('LOGIN_PAGE_TITLE', default='Login | Auth Service')
 
+SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', default=False)
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
