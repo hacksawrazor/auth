@@ -56,3 +56,4 @@ htmlcov/
 # Testing
 .pytest_cache
 .tox/
+!oidc_private.pem

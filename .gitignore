@@ -176,4 +176,4 @@ pyauthservice/__pycache__/urls.cpython-37.pyc
 docker-compose.override.yml
 .docker/
 docker-volumes/
-.vscode
+.vscode!oidc_private.pem
