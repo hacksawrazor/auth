@@ -53,4 +53,4 @@ def user_login_view(request):
                 return redirect(next_url)
             return redirect('/dashboard/')
         messages.error(request, 'Invalid credentials.')
-    return render(request, 'login.html')
+    return render(request, 'users/login.html')
