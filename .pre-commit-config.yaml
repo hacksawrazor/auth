@@ -1,0 +1,8 @@
+repos:
+  - repo: local
+    hooks:
+      - id: django-quick-test
+        name: Django quick test
+        entry: bash -c 'DB_ENGINE=sqlite3 DEBUG=True python manage.py test users.test_login_view users.test_session_flow users.test_oidc_verify --verbosity=1 -f'
+        language: system
+        files: 'pyauthservice/.*\.py|users/.*\.py|tests/.*\.py$'
