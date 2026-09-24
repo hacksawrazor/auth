@@ -7,3 +7,4 @@ psycopg2-binary==2.9.9
 certifi>=2024.2.2
 gunicorn>=21.2.0
 pytest>=7
+PyJWT>=2
