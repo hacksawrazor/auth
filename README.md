@@ -292,6 +292,9 @@ Before running the deploy workflow, set the following in your repository:
 
 These are required for the workflow to authenticate with PythonAnywhere.
 
+## Testing
+See [TESTING.md](TESTING.md) for unit-test guidance (manage.py test, pytest.ini, OIDC/signal coverage, DB_API/environment setup).
+
 ## License
 
 MIT License
