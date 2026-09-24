@@ -46,7 +46,7 @@
 
   <form method="post" action="{% url 'user_login' %}" novalidate>
     {% csrf_token %}
-    <input type="hidden" name="next" value="{{ next|default:'/dashboard/' }}">
+    <input type="hidden" name="next" value="{{ next|default:'/login/' }}">
 
     <label for="id_username">Username</label>
     <input id="id_username" type="text" name="username" autocomplete="username" required aria-required="true" placeholder="you@example.com">
