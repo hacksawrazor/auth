@@ -12,6 +12,8 @@ urlpatterns = [
     path('api/', include(users_urls)),
     path('logout/', user_logout_view, name='user_logout'),
     path('login/', user_login_view, name='user_login'),
+    from pyauthservice import views
+    path('home/', views.home_view, name='user_home'),
     path('health/', health, name='health'),
 ]
 

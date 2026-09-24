@@ -36,6 +36,15 @@ def health(request):
         "oidc_config": oidc_ok,
     })
 
+def home_view(request):
+    if request.user.is_authenticated:
+        return render(request, 'users/login_success.html', {
+            'theme_color': settings.LOGIN_THEME_COLOR,
+            'logo_url': settings.LOGIN_LOGO_URL,
+            'page_title': settings.LOGIN_PAGE_TITLE,
+        })
+    return redirect('/login/')
+
 def user_logout_view(request):
     if request.user.is_authenticated:
         logout(request)
