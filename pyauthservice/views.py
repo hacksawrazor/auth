@@ -56,4 +56,4 @@ def user_login_view(request):
                 return redirect(next_url)
             return render(request, 'users/login_success.html')
         messages.error(request, 'Invalid credentials.')
-    return render(request, 'users/login.html')
+    return render(request, 'users/login.html', {'next': request.GET.get('next') or ''})
