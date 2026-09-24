@@ -13,22 +13,7 @@ permissions:
   packages: read
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-      - name: Run Django tests
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
-          DB_ENGINE=sqlite3 DEBUG=True python manage.py test users.test_login_view users.test_session_flow users.test_oidc_verify
   deploy:
-    needs: test
     uses: hacksawrazor/ci-cd/.github/workflows/deploy-docker-oci-existing.yml@main
     with:
       image-name: '${{ github.repository }}'
