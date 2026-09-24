@@ -19,9 +19,9 @@ jobs:
       container-port: '8000:8000'
       use-sudo: true
     secrets:
-      SSH_HOST: ${{ secrets.EC2_PUBLIC_IP }}
-      SSH_USER: ${{ secrets.EC2_SSH_USER }}
-      SSH_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+      SSH_HOST: ${{ secrets.SERVER_HOST_EC2 }}
+      SSH_USER: ${{ secrets.SERVER_USER_EC2 }}
+      SSH_KEY: ${{ secrets.SERVER_SSH_KEY_EC2 }}
       
       # Maps all individual repository secrets dynamically into .env generator
       INDIVIDUAL_SECRETS_JSON: ${{ toJson(vars) }}

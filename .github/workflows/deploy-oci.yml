@@ -17,7 +17,7 @@ jobs:
       deploy-path: '/opt/apps/auth'
       use-sudo: true
     secrets:
-      SSH_HOST: ${{ secrets.OCI_SERVER_IP }}
-      SSH_USER: ${{ secrets.OCI_SERVER_USER }}
-      SSH_KEY: ${{ secrets.OCI_SSH_PRIVATE_KEY }}
+      SSH_HOST: ${{ secrets.SERVER_HOST_OCI }}
+      SSH_USER: ${{ secrets.SERVER_USER_OCI }}
+      SSH_KEY: ${{ secrets.SERVER_SSH_KEY_OCI }}
       INDIVIDUAL_SECRETS_JSON: ${{ toJson(vars) }}
