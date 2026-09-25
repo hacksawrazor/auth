@@ -1,85 +1,81 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
+
 <head>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20focusable%3D%22false%22%20aria-hidden%3D%22true%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m19%209%201.25-2.75L23%205l-2.75-1.25L19%201l-1.25%202.75L15%205l2.75%201.25zm-7.5.5L9%204%206.5%209.5%201%2012l5.5%202.5L9%2020l2.5-5.5L17%2012zM19%2015l-1.25%202.75L15%2019l2.75%201.25L19%2023l1.25-2.75L23%2019l-2.75-1.25z%22%20fill%3D%22%23A78BFA%22%2F%3E%3C%2Fsvg%3E">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ page_title }}</title>
-<style>
-  :root { --primary-color: {{ theme_color }}; }
-  * { box-sizing: border-box; }
-  html, body { height: 100%; }
-  body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); margin: 0; padding: 0; color: #111827; }
-  .split { display: flex; height: 100vh; width: 100%; }
-  .left { flex: 1; background: linear-gradient(160deg, #e0e7ff 0%, #ede9fe 60%, #f3e8ff 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 3rem 2.5rem; color: #312e81; }
-  .left h2 { font-size: 2rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1.15; margin: 0 0 0.75rem; color: #312e81; }
-  .left p { font-size: 1.05rem; opacity: 0.9; line-height: 1.55; margin: 0; color: #5333a1; }
-  .right { width: 420px; min-width: 320px; background: #f8f6fb; display: flex; align-items: center; justify-content: flex-end; padding: 3rem 2rem; border-left: 1px solid #ede9fe; }
-  @media (max-width: 900px) {
-    .split { flex-direction: column; }
-    .left { padding: 2rem 1.5rem; min-height: 35vh; }
-    .right { width: 100%; padding: 2rem; }
-  }
-  h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 1.25rem; color: #111827; }
-  .messages { margin-bottom: 1rem; }
-  .messages .error { color: #dc2626; background: #fee2e2; padding: 0.5rem; border-radius: 0.375rem; }
-  .messages .success { color: #166534; background: #dcfce7; padding: 0.5rem; border-radius: 0.375rem; }
-  label { display: block; font-weight: 500; margin-bottom: 0.25rem; font-size: 0.875rem; }
-  input[type="text"], input[type="password"] { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; font-size: 1rem; margin-bottom: 1rem; background: #f9fafb; }
-  input:focus { outline: 2px solid #6366f1; border-color: #6366f1; }
-  button { width: 100%; padding: 0.7rem; background: var(--primary-color); color: #fff; border: none; border-radius: 0.5rem; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.15s ease, transform 0.15s ease; }
-  button:hover { background: #312e81; color: #fff; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,0,0,0.25); font-weight: 700; }
-  .logo { max-width: 120px; width: 72px; height: 72px; display: block; margin: 0 auto 1.25rem; filter: drop-shadow(0 2px 8px rgba(167,139,250,0.35)); }
-  .form-top-accent { height: 4px; width: 100%; background: linear-gradient(90deg, var(--primary-color), #a78bfa); border-radius: 2px 2px 0 0; margin-bottom: 1.5rem; }
-  .left-decoration { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.15; background: radial-gradient(circle at 30% 20%, rgba(167,139,250,0.5) 0%, transparent 60%); }
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20focusable%3D%22false%22%20aria-hidden%3D%22true%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m19%209%201.25-2.75L23%205l-2.75-1.25L19%201l-1.25%202.75L15%205l2.75%201.25zm-7.5.5L9%204%206.5%209.5%201%2012l5.5%202.5L9%2020l2.5-5.5L17%2012zM19%2015l-1.25%202.75L15%2019l2.75%201.25L19%2023l1.25-2.75L23%2019l-2.75-1.25z%22%20fill%3D%22%23A78BFA%22%2F%3E%3C%2Fsvg%3E">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title }}</title>
+  <link rel="stylesheet" href="{% static 'users/login.css' %}">
 
-  @keyframes pulse-blur { 0%, 100% { opacity: 0.35; transform: scale(1); } 50% { opacity: 0.55; transform: scale(1.08); } }
-</style>
 </head>
+
 <body>
-<div class="split" role="main" aria-label="Login form">
-  <div class="left" aria-label="Branding" style="position:relative;">
-    <div class="left-decoration" aria-hidden="true"></div>
-    <div aria-hidden="true" style="position:absolute;top:50%;left:50%;width:220px;height:220px;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(167,139,250,0.35) 0%,transparent 65%);pointer-events:none;border-radius:50%;filter:blur(12px);z-index:0;animation:pulse-blur 6s ease-in-out infinite;"></div>
-    <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20focusable%3D%22false%22%20aria-hidden%3D%22true%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m19%209%201.25-2.75L23%205l-2.75-1.25L19%201l-1.25%202.75L15%205l2.75%201.25zm-7.5.5L9%204%206.5%209.5%201%2012l5.5%202.5L9%2020l2.5-5.5L17%2012zM19%2015l-1.25%202.75L15%2019l2.75%201.25L19%2023l1.25-2.75L23%2019l-2.75-1.25z%22%20fill%3D%22%23A78BFA%22%2F%3E%3C%2Fsvg%3E" alt="Logo" style="width:80px;height:80px;display:block;margin-top:auto;margin-bottom:0.5rem;filter:drop-shadow(0 2px 8px rgba(167,139,250,0.45));" aria-label="App logo">
-    <h2>Hacksaw</h2>
-    <p>Sign in with a session, not a token graveyard.</p>
-  </div>
-  <div class="right">
-    <div style="width:100%;max-width:360px;">
-      <div class="form-top-accent" aria-hidden="true"></div>
-      <h1>Sign in</h1>
-      <p class="subtitle" style="color:#6b7280;margin-bottom:1.25rem;font-size:0.95rem;">Access your account</p>
+  <nav class="utility-nav" aria-label="Utility">
+    <button id="theme-toggle" type="button" aria-label="Toggle dark mode" class="theme-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="18" height="18" fill="currentColor"><path d="M512 320C512 214 426 128 320 128L320 512C426 512 512 426 512 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/></svg>
+    </button>
+  </nav>
+  <main class="split" aria-label="Login form">
+    <aside class="left" aria-label="Branding">
+      <div class="left-decoration" aria-hidden="true"></div>
+      <div aria-hidden="true" class="mobile-blur"></div>
+      <img
+        src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20focusable%3D%22false%22%20aria-hidden%3D%22true%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m19%209%201.25-2.75L23%205l-2.75-1.25L19%201l-1.25%202.75L15%205l2.75%201.25zm-7.5.5L9%204%206.5%209.5%201%2012l5.5%202.5L9%2020l2.5-5.5L17%2012zM19%2015l-1.25%202.75L15%2019l2.75%201.25L19%2023l1.25-2.75L23%2019l-2.75-1.25z%22%20fill%3D%22%23A78BFA%22%2F%3E%3C%2Fsvg%3E"
+        alt="Logo" class="logo-img" aria-label="App logo">
+      <h2>Hacksaw</h2>
+      <p>A secure home for your account, with streamlined sign-in, single sign-on, and the tools you need to manage your identity across connected services.</p>
+    </aside>
+    <section class="right" aria-label="Login panel">
+      <section class="form-inner">
+        <div class="form-top-accent" aria-hidden="true"></div>
+        <h1>Sign in</h1>
+        <p class="subtitle">Access your account</p>
 
-      {% if messages %}
-      <div class="messages" aria-live="polite">
-        {% for message in messages %}
-          <div class="{% if message.tags %}{{ message.tags|join:' ' }}{% endif %}">{{ message }}</div>
-        {% endfor %}
-      </div>
-      {% endif %}
+        {% if messages %}
+        <section class="messages" aria-live="polite">
+          {% for message in messages %}
+          <p class="{% if message.tags %}{{ message.tags|join:' ' }}{% endif %}">{{ message }}</p>
+          {% endfor %}
+        </section>
+        {% endif %}
 
-      {% if error %}
-      <div class="messages" aria-live="assertive"><div class="error">{{ error }}</div></div>
-      {% endif %}
-      {% if success %}
-      <div class="messages" aria-live="polite"><div class="success">{{ success }}</div></div>
-      {% endif %}
+        {% if error %}
+        <section class="messages" aria-live="assertive">
+          <p class="error">{{ error }}</p>
+        </section>
+        {% endif %}
+        {% if success %}
+        <section class="messages" aria-live="polite">
+          <p class="success">{{ success }}</p>
+        </section>
+        {% endif %}
 
-      <form method="post" action="{% url 'user_login' %}" novalidate>
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next|default:'/home/' }}">
+        <form method="post" action="{% url 'user_login' %}" novalidate>
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ next|default:'/home/' }}">
 
-        <label for="id_username">Username</label>
-        <input id="id_username" type="text" name="username" autocomplete="username" required aria-required="true" placeholder="you@example.com">
+          <label for="id_username">Username</label>
+          <input id="id_username" type="text" name="username" autocomplete="username" required aria-required="true"
+            placeholder="dildusional">
 
-        <label for="id_password">Password</label>
-        <input id="id_password" type="password" name="password" autocomplete="current-password" required aria-required="true" placeholder="••••••••">
+          <label for="id_password">Password</label>
+          <input id="id_password" type="password" name="password" autocomplete="current-password" required
+            aria-required="true" placeholder="••••••••">
 
-        <button type="submit">Sign in</button>
-      </form>
-    </div>
-  </div>
-</div>
+          <button type="submit">Sign in</button>
+        </form>
+        <footer class="footer-legal">
+          &copy; {{ page_title }}. All rights reserved. <a href="#" class="footer-link">Privacy</a> &middot; <a href="#"
+            class="footer-link">Terms</a>
+        </footer>
+      </section>
+    </section>
+  </main>
+  <script src="{% static 'users/login.js' %}"></script>
+
 </body>
+
 </html>

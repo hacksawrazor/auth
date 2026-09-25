@@ -1,37 +1,53 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20focusable%3D%22false%22%20aria-hidden%3D%22true%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m19%209%201.25-2.75L23%205l-2.75-1.25L19%201l-1.25%202.75L15%205l2.75%201.25zm-7.5.5L9%204%206.5%209.5%201%2012l5.5%202.5L9%2020l2.5-5.5L17%2012zM19%2015l-1.25%202.75L15%2019l2.75%201.25L19%2023l1.25-2.75L23%2019l-2.75-1.25z%22%20fill%3D%22%23A78BFA%22%2F%3E%3C%2Fsvg%3E">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hacksaw | Welcome</title>
-<style>
-  :root { --primary-color: {{ theme_color }}; }
-  * { box-sizing: border-box; }
-  body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); margin: 0; padding: 0; color: #111827; min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-  body::before { content: ''; position: absolute; top: -10%; left: -10%; width: 60%; height: 60%; background: radial-gradient(circle, rgba(167,139,250,0.12) 0%, transparent 70%); pointer-events: none; z-index: 0; }
-  .wrap { max-width: 640px; padding: 3rem 2rem; text-align: center; position: relative; z-index: 1; }
-  h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.035em; line-height: 1.1; margin-bottom: 0.75rem; color: #111827; }
-  p { font-size: 1.15rem; color: #6b7280; line-height: 1.65; margin-bottom: 1.25rem; }
-  .tag { display: inline-block; padding: 0.35rem 0.75rem; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; border-radius: 9999px; background: #efe6fe; color: #7c3aed; }
-</style>
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20focusable%3D%22false%22%20aria-hidden%3D%22true%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m19%209%201.25-2.75L23%205l-2.75-1.25L19%201l-1.25%202.75L15%205l2.75%201.25zm-7.5.5L9%204%206.5%209.5%201%2012l5.5%202.5L9%2020l2.5-5.5L17%2012zM19%2015l-1.25%202.75L15%2019l2.75%201.25L19%2023l1.25-2.75L23%2019l-2.75-1.25z%22%20fill%3D%22%23A78BFA%22%2F%3E%3C%2Fsvg%3E">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title }} | Welcome</title>
+  <link rel="stylesheet" href="{% static 'users/login.css' %}">
 </head>
+
 <body>
-<div class="wrap" role="main" aria-label="Login success">
-  <a href="https://hacksaw.in/" aria-label="Go to Hacksaw" style="display:inline-block;text-decoration:none;transition:transform 0.15s ease,box-shadow 0.15s ease;">
-    <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20focusable%3D%22false%22%20aria-hidden%3D%22true%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m19%209%201.25-2.75L23%205l-2.75-1.25L19%201l-1.25%202.75L15%205l2.75%201.25zm-7.5.5L9%204%206.5%209.5%201%2012l5.5%202.5L9%2020l2.5-5.5L17%2012zM19%2015l-1.25%202.75L15%2019l2.75%201.25L19%2023l1.25-2.75L23%2019l-2.75-1.25z%22%20fill%3D%22%23A78BFA%22%2F%3E%3C%2Fsvg%3E" alt="Hacksaw" style="width:72px;height:72px;margin-bottom:1rem;display:block;" aria-label="Logo">
-  </a>
-  <h1>You're in.</h1>
-  <div style="width:48px;height:2px;background:linear-gradient(90deg,transparent,var(--primary-color),transparent);margin:0 auto 1.25rem;border-radius:2px;opacity:0.6;"></div>
-  <p>The razor-sharp authentication service has verified you. No password was harmed in the making of this session - probably.</p>
-  <p style="font-size:0.85rem;color:#9ca3af;margin-top:1.5rem;">Session established via OIDC. No tokens exposed to the page.</p>
-  <p><span class="tag">Hacksaw Verified</span> · Session active </p>
-  <div style="width:48px;height:2px;background:linear-gradient(90deg,transparent,var(--primary-color),transparent);margin:1.5rem auto 0;border-radius:2px;opacity:0.6;"></div>
-  <p style="font-size:0.75rem;color:#9ca3af;margin-top:1rem;">Hacksaw Auth · Session-based authentication</p>
-  <a href="/logout/" aria-label="Log out" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1.25rem;color:var(--primary-color);font-weight:700;font-size:1rem;text-decoration:none;border-bottom:2px solid var(--primary-color);padding-bottom:2px;transition:color 0.15s ease,border-color 0.15s ease;" onmouseover="this.style.color='#312e81';this.style.borderColor='#312e81'" onmouseout="this.style.color='var(--primary-color)';this.style.borderColor='var(--primary-color)'">
-    <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23A78BFA%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M9%2021l-6-6%206-6%22%2F%3E%3Cpath%20d%3D%22M15%203l6%206-6%206%22%2F%3E%3C%2Fsvg%3E" alt="" style="width:20px;height:20px;display:block;" aria-hidden="true">
-    Log out
-  </a>
-</div>
+  <nav class="utility-nav" aria-label="Utility">
+    <button id="theme-toggle" type="button" aria-label="Toggle dark mode" class="theme-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M512 320C512 214 426 128 320 128L320 512C426 512 512 426 512 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/></svg>
+    </button>
+  </nav>
+  <main class="split" aria-label="Sign-in confirmation">
+    <aside class="left" aria-label="Hacksaw">
+      <div class="left-decoration" aria-hidden="true"></div>
+      <div class="mobile-blur" aria-hidden="true"></div>
+      <a class="success-brand" href="https://hacksaw.in/" aria-label="Visit Hacksaw">
+        <img class="logo-img" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20focusable%3D%22false%22%20aria-hidden%3D%22true%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m19%209%201.25-2.75L23%205l-2.75-1.25L19%201l-1.25%202.75L15%205l2.75%201.25zm-7.5.5L9%204%206.5%209.5%201%2012l5.5%202.5L9%2020l2.5-5.5L17%2012zM19%2015l-1.25%202.75L15%2019l2.75%201.25L19%2023l1.25-2.75L23%2019l-2.75-1.25z%22%20fill%3D%22%23A78BFA%22%2F%3E%3C%2Fsvg%3E" alt="">
+      </a>
+      <h2>Hacksaw</h2>
+      <p>A secure home for your account, with streamlined sign-in, single sign-on, and the tools you need to manage your identity across connected services.</p>
+    </aside>
+    <section class="right" aria-labelledby="success-heading">
+      <div class="form-inner success-content">
+        <div class="form-top-accent" aria-hidden="true"></div>
+        <p class="success-eyebrow">Hacksaw verified</p>
+        <h1 id="success-heading">You're in.</h1>
+        <p class="success-message">Your identity has been verified and your secure session is ready. You can continue knowing your credentials stay protected.</p>
+        <p class="session-detail">Session established via OIDC. No tokens are exposed to this page.</p>
+        <p class="session-status"><span class="status-indicator" aria-hidden="true"></span>Session active</p>
+        <footer class="success-footer">
+          <a class="logout-link" href="/logout/">
+            Log out
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M480 491.4C538.5 447.4 576 379.8 576 304C576 171.5 461.4 64 320 64C178.6 64 64 171.5 64 304C64 379.8 101.5 447.4 160 491.4L160 528C160 554.5 181.5 576 208 576L240 576L240 536C240 522.7 250.7 512 264 512C277.3 512 288 522.7 288 536L288 576L352 576L352 536C352 522.7 362.7 512 376 512C389.3 512 400 522.7 400 536L400 576L432 576C458.5 576 480 554.5 480 528L480 491.4zM160 320C160 284.7 188.7 256 224 256C259.3 256 288 284.7 288 320C288 355.3 259.3 384 224 384C188.7 384 160 355.3 160 320zM416 256C451.3 256 480 284.7 480 320C480 355.3 451.3 384 416 384C380.7 384 352 355.3 352 320C352 284.7 380.7 256 416 256z"/></svg>
+          </a>
+        </footer>
+        <footer class="footer-legal">
+          &copy; {{ page_title }}. All rights reserved. <a href="#" class="footer-link">Privacy</a> &middot; <a href="#" class="footer-link">Terms</a>
+        </footer>
+      </div>
+    </section>
+  </main>
+  <script src="{% static 'users/login.js' %}"></script>
 </body>
+
 </html>
