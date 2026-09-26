@@ -1,0 +1,200 @@
+/*
+ * Customizable variables
+ * Update these variable to create theme
+ */
+
+/*
+ * General
+ */
+
+$background-color: #111827;
+$text-color: #d1d5db;
+$dim-text-color: #9ca3af;
+$error-text-color: #c7254e;
+
+$link-color: #a5b4fc;
+$hover-link-color: #c7d2fe;
+
+$contrast-color: #818cf8;
+
+$font: Arial, sans-serif !default;
+$font-size: 14px;
+
+/*
+ * Sidebar
+ */
+
+$sidebar-width: 250px;
+
+$sidebar-background-color: #0b1020;
+$sidebar-contrast-background-color: #111827;
+$sidebar-contrast-text-color: #a5b4fc;
+
+$sidebar-arrow-color: #070b16;
+$sidebar-hover-arrow-color: #c7d2fe;
+
+$sidebar-action-color: #a5b4fc;
+$sidebar-hover-action-color: #fff;
+
+$sidebar-title-action-color: #fff;
+$sidebar-hover-title-action-item-color: #c7d2fe;
+
+$sidebar-text-color: #a5b4fc;
+$sidebar-icon-color: #a5b4fc;
+$sidebar-link-color: #c7d2fe;
+$sidebar-hover-link-color: #fff;
+$sidebar-hover-background-color: #312e81;
+
+$sidebar-popup-search-input-background-color: #1f2937;
+$sidebar-popup-search-input-text-color: #e5e7eb;
+$sidebar-popup-search-input-placeholder-color: #9ca3af;
+
+$sidebar-popup-background-color: #111827;
+$sidebar-popup-text-color: #d1d5db;
+$sidebar-popup-overlay-color: #000;
+
+$sidebar-popup-link-text-color: #d1d5db;
+$sidebar-popup-hover-link-color: #fff;
+$sidebar-popup-hover-link-background-color: #4338ca;
+
+/*
+ * Top
+ */
+
+$top-height: 32px;
+
+$top-text-color: #cbd5e1;
+$top-separator-color: #64748b;
+$top-link-color: #cbd5e1;
+$top-hover-link-color: #c7d2fe;
+$top-border-color: #374151;
+$top-icon-color: $link-color;
+
+$top-dropdown-background-color: #1f2937;
+$top-dropdown-text-color: #f9fafb;
+$top-dropdown-contrast-background-color: #111827;
+$top-dropdown-contrast-text-color: #cbd5e1;
+$top-dropdown-border-color: #374151;
+$top-dropdown-link-color: #f9fafb;
+$top-dropdown-hover-link-color: #c7d2fe;
+$top-dropdown-icon-color: #c7d2fe;
+$top-dropdown-selected-color: #818cf8;
+
+/*
+ * Content
+ */
+
+$content-background-color: #111827;
+$content-contrast-background-color: #1f2937; //inline list bg
+$content-contrast2-background-color: #1f2937; //table header
+$content-contrast3-background-color: #1f2937; //dashboard, delete collapsable
+$content-selected-background-color: #312e81;
+$content-contrast2-text-color: #d1d5db;
+$content-border-color: #374151; //row bottom
+$content-border2-color: #4b5563; //table bottom
+$content-selected-border-color: #818cf8;
+
+$tab-selected-border-color: #818cf8;
+$tab-error-border-color: #c7254e;
+
+/*
+ * Buttons
+ */
+
+$button-background-color: #374151;
+$button-hover-background-color: #4f46e5;
+$button-active-background-color: $contrast-color;
+$button-text-color: #e5e7eb;
+$button-hover-text-color: #fff;
+$button-active-text-color: #fff;
+
+$primary-button-background-color: #4f46e5;
+$primary-button-text-color: #fff;
+
+$danger-button-background-color: #b91c1c;
+$danger-button-text-color: #fff;
+
+$background-button-background-color: #1f2937;
+$background-button-text-color: #e5e7eb;
+
+/*
+ * Inputs
+ */
+
+$input-background-color: #1f2937;
+$input-contrast-background-color: #374151;
+$input-border-color: #4b5563;
+$input-hover-background-color: #4f46e5;
+$input-icon-color: $link-color;
+$input-text-color: #e5e7eb;
+$input-contrast-text-color: #e5e7eb;
+$input-hover-text-color: #fff;
+$input-selected-text-color: $contrast-color;
+$input-disabled-text-color: $dim-text-color;
+$input-placeholder-color: #9ca3af;
+$input-shadow-color: transparentize($contrast-color, 0.25);
+
+$background-input-background-color: #1f2937;
+$background-input-border-color: #374151;
+$background-input-text-color: #e5e7eb;
+
+/*
+ * Messages
+ */
+
+$warning-color: #e75e40;
+$warning-text-color: #fff;
+$info-color: #FCA326;
+$info-text-color: #fff;
+$success-color: #2d9fd8;
+$success-text-color: #fff;
+
+/*
+ * Login
+ */
+
+$login-background-color: $sidebar-background-color;
+$login-title-text-color: #c7d2fe;
+$login-title-contrast-text-color: #fff;
+$login-header-background-color: #1f2937;
+$login-header-text-color: #e5e7eb;
+$login-content-background-color: #111827;
+
+/*
+ * jQuery UI
+ */
+
+$jquery-ui-buttonpane-background: #1f2937;
+
+$jquery-ui-state-default-background-color: #1f2937;
+$jquery-ui-state-default-border-color: #4b5563;
+$jquery-ui-state-default-text-color: #e5e7eb;
+
+$jquery-ui-state-hover-background-color: #4f46e5;
+$jquery-ui-state-hover-border-color: #4f46e5;
+$jquery-ui-state-hover-text-color: $button-hover-text-color;
+
+$jquery-ui-state-active-background-color: #4338ca;
+$jquery-ui-state-active-border-color: #4338ca;
+$jquery-ui-state-active-text-color: $button-active-text-color;
+
+$jquery-ui-state-highlight-background-color: #1f2937;
+$jquery-ui-state-highlight-border-color: #818cf8;
+$jquery-ui-state-highlight-text-color: #c7d2fe;
+
+$jquery-ui-overlay-color: #000;
+
+$jquery-ui-tooltip-background-color: #000;
+$jquery-ui-tooltip-text-color: #fff;
+
+/*
+ * Charts
+ */
+
+$chart-fillColor: transparentize($hover-link-color, 0.75);
+$chart-strokeColor: $hover-link-color;
+$chart-pointColor: #fff;
+$chart-pointHighlightFill: $hover-link-color;
+$chart-scaleGridLineColor: transparentize(#000, 0.9);
+$chart-scaleLineColor: transparentize(#000, 0.9);
+$chart-scaleFontColor: #cbd5e1;

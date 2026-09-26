@@ -6,6 +6,7 @@ from users import urls as users_urls
 from .views import health, user_login_view, user_logout_view, home_view
 
 urlpatterns = [
+    path('', include('jet.urls')),
     path('', RedirectView.as_view(url='/login/', permanent=False), name='home'),
     path('admin/', admin.site.urls),
     path('o/', include(oauth2_urls)),

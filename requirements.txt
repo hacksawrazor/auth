@@ -9,3 +9,4 @@ gunicorn>=21.2.0
 pytest>=7
 PyJWT>=2
 django-axes>=5
+django-jet-reboot>=1.3.10

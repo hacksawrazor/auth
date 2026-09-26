@@ -93,6 +93,7 @@ CORS_ALLOW_CREDENTIALS = True
 # Application definition
 
 INSTALLED_APPS = [
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -285,6 +286,7 @@ USE_TZ = True
 
 STATIC_URL = env('STATIC_URL', default='/static/')
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -304,3 +306,73 @@ SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+JET_THEMES = [
+    {
+        'theme': 'dark',
+        'color': '#818cf8',
+        'title': 'Dark',
+    },
+    {
+        'theme': 'brand',
+        'color': '#4f46e5',
+        'title': 'Brand',
+    },
+    {
+        'theme': 'default', # theme folder name
+        'color': '#47bac1', # color of the theme's button in user menu
+        'title': 'Default' # theme title
+    },
+    {
+        'theme': 'green',
+        'color': '#44b78b',
+        'title': 'Green'
+    },
+    {
+        'theme': 'light-green',
+        'color': '#2faa60',
+        'title': 'Light Green'
+    },
+    {
+        'theme': 'light-violet',
+        'color': '#a464c4',
+        'title': 'Light Violet'
+    },
+    {
+        'theme': 'light-blue',
+        'color': '#5EADDE',
+        'title': 'Light Blue'
+    },
+    {
+        'theme': 'light-gray',
+        'color': '#222',
+        'title': 'Light Gray'
+    }
+]
+
+JET_DEFAULT_THEME = 'brand'
+
+JET_CHANGE_FORM_SIBLING_LINKS = True
+JET_INDEX_DASHBOARD = 'jet.dashboard.dashboard.DefaultIndexDashboard'
+
+JET_SIDE_MENU_ITEMS = [
+    {'app_label': 'auth', 'items': [
+        {'name': 'group'},
+        {'name': 'permission'},
+    ]},
+    {'app_label': 'axes', 'items': [
+        {'name': 'accessattempt'},
+        {'name': 'accessfailurelog'},
+        {'name': 'accesslog'},
+    ]},
+    {'app_label': 'oauth2_provider', 'items': [
+        {'name': 'accesstoken'},
+        {'name': 'application'},
+        {'name': 'grant'},
+        {'name': 'idtoken'},
+        {'name': 'refreshtoken'},
+    ]},
+    {'app_label': 'users', 'items': [
+        {'name': 'user'},
+    ]},
+]
