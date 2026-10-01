@@ -189,6 +189,7 @@ LOGOUT_REDIRECT_URL = '/login/'
 OAUTH2_PROVIDER = {
     'ACCESS_TOKEN_EXPIRE_SECONDS': 3600,
     'REFRESH_TOKEN_EXPIRE_SECONDS': 3600 * 24 * 365,
+    'ROTATE_REFRESH_TOKEN': True,
     'PKCE_REQUIRED': env.bool('OAUTH2_PKCE_REQUIRED', default=False),
     "ACCESS_TOKEN_GENERATOR": "oauth.jwt_tokens.jwt_access_token_generator",
     "REFRESH_TOKEN_GENERATOR": "oauth.jwt_tokens.opaque_refresh_token_generator",
@@ -203,6 +204,7 @@ OAUTH2_PROVIDER = {
         "read": "Read-only access",
         "write": "Write access",
         "openid": "OpenID Connect scope",
+        "offline_access": "Maintain access when the user is not present",
         "email": "Access to the user's email address",
         "profile": "Access to the user's profile information",
     },
