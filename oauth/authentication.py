@@ -22,17 +22,26 @@ class SSOJWTAuthentication(BaseAuthentication):
         if isinstance(audiences, str):
             audiences = [audiences]
         if not isinstance(audiences, list) or not all(isinstance(audience, str) for audience in audiences):
+            logger.debug("Rejecting JWT with missing or malformed audience claim")
             return False
         if audiences == [settings.OAUTH2_DEFAULT_AUDIENCE]:
+            logger.debug("JWT matched configured legacy audience")
             return True
 
         request_uri = request.build_absolute_uri().split("?", 1)[0]
-        return validate_resource_as_url_prefix(request_uri, audiences)
+        matched = validate_resource_as_url_prefix(request_uri, audiences)
+        logger.debug(
+            "JWT resource audience check %s for request URI %s against %d audience(s)",
+            "passed" if matched else "failed",
+            request_uri,
+            len(audiences),
+        )
+        return matched
 
     def authenticate(self, request):
         auth_header = request.headers.get("Authorization", "")
         if not auth_header or not auth_header.startswith("Bearer "):
-            logger.warning("Authorization header missing or invalid")
+            logger.debug("No Bearer authorization header; allowing other authenticators to run")
             return None  # let other authenticators run (or AnonymousUser)
 
         token = auth_header.split(" ")[1]
@@ -58,13 +67,14 @@ class SSOJWTAuthentication(BaseAuthentication):
                 issuer=settings.OAUTH2_PROVIDER["OIDC_ISS_ENDPOINT"],
             )
         except jwt.ExpiredSignatureError:
-            logger.error("Token expired")
+            logger.info("Rejected expired JWT access token")
             raise exceptions.AuthenticationFailed("Token expired")
         except jwt.InvalidTokenError as e:
-            logger.error(f"Invalid token: {str(e)}")
-            raise exceptions.AuthenticationFailed(f"Invalid token: {str(e)}")
+            logger.info("Rejected invalid JWT access token (%s)", type(e).__name__)
+            raise exceptions.AuthenticationFailed("Invalid token")
 
         if not self._audience_matches(request, payload):
+            logger.info("Rejected JWT access token because its audience did not match this API")
             raise exceptions.AuthenticationFailed("Invalid token audience")
 
         # Get user from the token payload
@@ -76,4 +86,8 @@ class SSOJWTAuthentication(BaseAuthentication):
             except User.DoesNotExist:
                 user = AnonymousUser()
 
+        logger.debug(
+            "Authenticated JWT access token for this API: scope_count=%d",
+            len(str(payload.get("scope", "")).split()),
+        )
         return (user, payload)

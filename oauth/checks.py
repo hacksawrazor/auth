@@ -1,12 +1,25 @@
+import logging
+
 from django.conf import settings
 from django.core import checks
 from django.db import OperationalError, ProgrammingError
 from oauth2_provider.models import AbstractApplication, Application
 
+logger = logging.getLogger(__name__)
+
 
 @checks.register(checks.Tags.models)
 def check_oauth_signing_configuration(app_configs, **kwargs):
     issues = []
+    logger.debug(
+        "Checking OAuth configuration: %d API scopes, %d resource policies, %d client defaults, "
+        "access lifetime=%d seconds, refresh lifetime=%d seconds",
+        len(settings.OAUTH2_API_SCOPES),
+        len(settings.OAUTH2_RESOURCE_POLICIES),
+        len(settings.OAUTH2_CLIENT_DEFAULTS),
+        settings.OAUTH2_ACCESS_TOKEN_EXPIRE_SECONDS,
+        settings.OAUTH2_REFRESH_TOKEN_EXPIRE_SECONDS,
+    )
     try:
         applications = Application.objects.all()
         for application in applications:

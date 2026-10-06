@@ -65,6 +65,17 @@ LOGGING = {
             'level': 'DEBUG' if DEBUG else 'INFO',
             'propagate': False,
         },
+        'oauth': {
+            'handlers': ['console'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': False,
+        },
+        'oauth2_provider': {
+            'handlers': ['console'],
+            # Toolkit DEBUG messages can include credential-bearing OAuth requests.
+            'level': 'INFO' if DEBUG else 'WARNING',
+            'propagate': False,
+        },
     },
 }
 
@@ -199,7 +210,6 @@ OAUTH2_REFRESH_TOKEN_EXPIRE_SECONDS = env.int(
     'OAUTH2_REFRESH_TOKEN_EXPIRE_SECONDS',
     default=3600 * 24 * 365,
 )
-
 OAUTH2_PROVIDER = {
     'ACCESS_TOKEN_EXPIRE_SECONDS': OAUTH2_ACCESS_TOKEN_EXPIRE_SECONDS,
     'REFRESH_TOKEN_EXPIRE_SECONDS': OAUTH2_REFRESH_TOKEN_EXPIRE_SECONDS,

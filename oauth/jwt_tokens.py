@@ -1,7 +1,10 @@
 import time, uuid, jwt
+import logging
 from django.conf import settings
 from oauthlib.common import generate_token
 from oauth2_provider.utils import jwk_from_pem
+
+logger = logging.getLogger(__name__)
 
 def get_token_user(request):
     if getattr(request, "user", ""):
@@ -36,8 +39,23 @@ def jwt_access_token_generator(request):
     private_key = settings.OAUTH2_PROVIDER["OIDC_RSA_PRIVATE_KEY"]
     key = jwk_from_pem(private_key)
     kid = key.thumbprint()
-    return jwt.encode(payload, private_key, algorithm="RS256", headers={"kid": kid})
+    logger.debug(
+        "Generating access token: client=%s grant_type=%s audiences=%s scope_count=%d expires_in=%d seconds",
+        getattr(request, "client_id", None),
+        getattr(request, "grant_type", ""),
+        audiences,
+        len(request.scopes or []),
+        exp - now,
+    )
+    encoded_token = jwt.encode(payload, private_key, algorithm="RS256", headers={"kid": kid})
+    logger.debug("Generated signed access token with key id %s", kid)
+    return encoded_token
 
 
 def opaque_refresh_token_generator(request):
+    logger.debug(
+        "Generating opaque refresh token: client=%s grant_type=%s",
+        getattr(request, "client_id", None),
+        getattr(request, "grant_type", ""),
+    )
     return generate_token(32)
