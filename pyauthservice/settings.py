@@ -15,6 +15,7 @@ import environ
 import certifi
 import os
 import logging
+from oauth.scope_catalog import API_SCOPE_CATALOG, DEFAULT_SCOPE_NAMES, SCOPE_CATALOG
 
 logger = logging.getLogger(__name__)
 
@@ -197,14 +198,15 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/login/'
 
-OAUTH2_API_SCOPES = env.json('OAUTH2_API_SCOPES', default={})
 OAUTH2_RESOURCE_POLICIES = env.json('OAUTH2_RESOURCE_POLICIES', default={})
 OAUTH2_CLIENT_DEFAULTS = env.json('OAUTH2_CLIENT_DEFAULTS', default={})
-OAUTH2_DEFAULT_AUDIENCE = env('OAUTH2_DEFAULT_AUDIENCE', default='default-resource-service')
-OAUTH2_DEFAULT_SCOPES = env.list(
-    'OAUTH2_DEFAULT_SCOPES',
-    default=['read', 'write', 'openid', 'offline_access', 'email', 'profile'],
+OAUTH2_PROVIDER_APPLICATION_MODEL = env(
+    'OAUTH2_PROVIDER_APPLICATION_MODEL',
+    default='oauth2_provider.Application',
 )
+OAUTH2_DEFAULT_AUDIENCE = env('OAUTH2_DEFAULT_AUDIENCE', default='default-resource-service')
+OAUTH2_API_SCOPES = dict(API_SCOPE_CATALOG)
+OAUTH2_DEFAULT_SCOPES = list(DEFAULT_SCOPE_NAMES)
 OAUTH2_ACCESS_TOKEN_EXPIRE_SECONDS = env.int('OAUTH2_ACCESS_TOKEN_EXPIRE_SECONDS', default=3600)
 OAUTH2_REFRESH_TOKEN_EXPIRE_SECONDS = env.int(
     'OAUTH2_REFRESH_TOKEN_EXPIRE_SECONDS',
@@ -219,21 +221,14 @@ OAUTH2_PROVIDER = {
     "REFRESH_TOKEN_GENERATOR": "oauth.jwt_tokens.opaque_refresh_token_generator",
     'OIDC_ENABLED': True,
     'OAUTH2_VALIDATOR_CLASS': 'oauth.validators.UserClaimsValidator',
+    'APPLICATION_ADMIN_CLASS': 'oauth.admin.OAuthApplicationAdmin',
     'DEFAULT_SCOPES': OAUTH2_DEFAULT_SCOPES,
     # OIDC RSA private key: prefer raw key in env, then a path in env, then BASE_DIR/oidc_private.pem
     # Set either `OIDC_RSA_PRIVATE_KEY` (PEM content) or `OIDC_PRIVATE_KEY_PATH` (path to PEM file)
     # or place `oidc_private.pem` at the project root.
     'OIDC_RSA_PRIVATE_KEY': None,
     'OIDC_ISS_ENDPOINT': env('OIDC_ISS_ENDPOINT'),
-    'SCOPES': {
-        "read": "Read-only access",
-        "write": "Write access",
-        "openid": "OpenID Connect scope",
-        "offline_access": "Maintain access when the user is not present",
-        "email": "Access to the user's email address",
-        "profile": "Access to the user's profile information",
-        **OAUTH2_API_SCOPES,
-    },
+    'SCOPES': dict(SCOPE_CATALOG),
 }
 
 # Resolve OIDC private key (populate the dict value above)

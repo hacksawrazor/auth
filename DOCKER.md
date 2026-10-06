@@ -85,11 +85,12 @@ Do not expose the session cookie or client secret to browser JavaScript.
 ### Resource-bound API tokens
 
 The authorization server uses OAuth 2.0 resource indicators (RFC 8707) to bind
-new API tokens to one or more API resource URIs. Configure API scopes and
-client-to-resource permissions in `.env` as JSON. For example:
+new API tokens to one or more API resource URIs. API scope names/descriptions
+and global default scopes are tracked in `oauth/scope_catalog.py`; per-client
+resource permissions are best configured in Django admin. Existing deployments
+can still use the environment fallback, for example:
 
 ```text
-OAUTH2_API_SCOPES={"pocketbase:access":"Access to the PocketBase API"}
 OAUTH2_RESOURCE_POLICIES={"nginx-gateway":{"https://pocketbase.example.com/":["pocketbase:access"]}}
 ```
 
@@ -108,16 +109,47 @@ For an existing client that does not send `resource` or `scope`, configure
 OAUTH2_CLIENT_DEFAULTS={"nginx-gateway":{"resources":["https://pocketbase.example.com/"],"scopes":["openid","email","profile","pocketbase:access"]}}
 ```
 
-Clients without an entry use `OAUTH2_DEFAULT_AUDIENCE` and
-`OAUTH2_DEFAULT_SCOPES`; their defaults preserve the current legacy audience
-and core scopes. This allows clients to migrate by configuration without
-requiring each client to change its OAuth request immediately. Do not add an
-API scope to global defaults: API scopes should only be defaulted for a client
-that is allowlisted for the matching resource.
+Clients without an entry use `OAUTH2_DEFAULT_AUDIENCE` and the catalog's
+`DEFAULT_SCOPE_NAMES`; these preserve the current legacy audience and core
+scopes. This allows clients to migrate by configuration without requiring each
+client to change its OAuth request immediately. Do not add an API scope to
+global defaults: API scopes should only be defaulted for a client that is
+allowlisted for the matching resource.
 
-Existing requests that omit `resource` retain the legacy
-`default-resource-service` audience. Keep those clients unchanged during
-migration. After deploying the new Toolkit version, run `python manage.py migrate`
+### Managing client policies in Django admin
+
+Client policies can also be managed in the Django admin without editing JSON
+environment variables. After deploying, run `python manage.py migrate`, then
+open **OAuth2 Provider > Applications** and edit the client. The application
+form includes:
+
+- **Client default scopes**: scopes applied only when the client does not send
+    a `scope` parameter. Leave empty to use the global default scopes.
+- **Allowed API resources and scopes**: add each canonical HTTPS resource URI
+    and select the API scopes that client may obtain for it. Mark at most one
+    resource as the default audience; that resource is used only when the client
+    omits `resource`.
+
+Resource scope choices come from `API_SCOPE_CATALOG` in
+`oauth/scope_catalog.py`. Add new API scope names/descriptions there, add a
+scope to `DEFAULT_SCOPE_NAMES` only when it should be requested by default, then
+deploy the code. OIDC identity scopes such as `openid`, `email`,
+and `profile` are not resource permissions and are not offered in the resource
+policy selector. A configured admin policy takes
+precedence over environment policy for that OAuth client. Clients without an
+admin policy continue to use `OAUTH2_CLIENT_DEFAULTS` and
+`OAUTH2_RESOURCE_POLICIES`, so the change can be rolled out one client at a
+time. Explicit OAuth request scopes/resources remain subject to that client's
+allowed resource policy; defaults do not grant permissions by themselves.
+Existing authorization grants and refresh tokens keep their original resource
+binding. A client newly given a default audience must complete a fresh
+authorization flow before it receives tokens bound to that audience; refresh
+tokens do not gain newly configured resource access.
+
+Clients without an admin default resource and without an environment default
+resource retain the legacy `default-resource-service` audience. Keep those
+clients unchanged during migration. After deploying the new Toolkit version,
+run `python manage.py migrate`
 before enabling resource-bound issuance; the Toolkit migration adds resource
 fields to grants, access tokens, and refresh tokens. Migrate clients API by API,
 and do not change the existing default audience until its consumers have moved.

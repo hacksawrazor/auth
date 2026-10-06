@@ -6,10 +6,63 @@ from oauthlib.oauth2.rfc6749 import errors
 from oauth2_provider.models import Grant
 from oauth2_provider.oauth2_validators import OAuth2Validator
 
+from .models import OAuthClientPolicy, OAuthResourcePolicy
+
 logger = logging.getLogger(__name__)
 
 
 class UserClaimsValidator(OAuth2Validator):
+    @staticmethod
+    def _load_admin_policy(client):
+        if client is None:
+            return None, []
+        client_policy = OAuthClientPolicy.objects.filter(application=client).first()
+        resource_policies = list(OAuthResourcePolicy.objects.filter(application=client))
+        return client_policy, resource_policies
+
+    @classmethod
+    def _resolve_client_defaults(cls, client_id, client):
+        client_policy, resource_policies = cls._load_admin_policy(client)
+        if client_policy is not None or resource_policies:
+            default_resources = [policy.resource_uri for policy in resource_policies if policy.is_default]
+            default_scopes = (
+                list(client_policy.default_scopes)
+                if client_policy is not None and client_policy.default_scopes is not None
+                else list(settings.OAUTH2_DEFAULT_SCOPES)
+            )
+            logger.debug(
+                "Loaded OAuth defaults for client %s from admin: resources=%d scopes=%d",
+                client_id,
+                len(default_resources),
+                len(default_scopes),
+            )
+            scope_source = "admin client defaults" if client_policy and client_policy.default_scopes is not None else "global defaults"
+            return default_resources, default_scopes, scope_source
+
+        client_defaults = settings.OAUTH2_CLIENT_DEFAULTS.get(client_id, {})
+        default_resources = list(client_defaults.get("resources", []))
+        default_scopes = list(client_defaults.get("scopes", settings.OAUTH2_DEFAULT_SCOPES))
+        logger.debug(
+            "Loaded OAuth defaults for client %s from environment: resources=%d scopes=%d",
+            client_id,
+            len(default_resources),
+            len(default_scopes),
+        )
+        scope_source = "environment client defaults" if "scopes" in client_defaults else "global defaults"
+        return default_resources, default_scopes, scope_source
+
+    @classmethod
+    def _resolve_resource_policies(cls, client_id, client):
+        client_policy, resource_policies = cls._load_admin_policy(client)
+        if client_policy is not None or resource_policies:
+            policies = {policy.resource_uri: set(policy.scopes) for policy in resource_policies}
+            logger.debug("Loaded %d API resource policy entries for client %s from admin", len(policies), client_id)
+            return policies
+        return {
+            resource: set(scopes)
+            for resource, scopes in settings.OAUTH2_RESOURCE_POLICIES.get(client_id, {}).items()
+        }
+
     @staticmethod
     def _request_resources(request):
         resource = getattr(request, "resource", None)
@@ -44,8 +97,7 @@ class UserClaimsValidator(OAuth2Validator):
             resources = list(refresh_token.resource or []) if refresh_token else []
             source = "refresh token" if refresh_token else "unbound refresh token"
         else:
-            client_defaults = settings.OAUTH2_CLIENT_DEFAULTS.get(request.client.client_id, {})
-            resources = list(client_defaults.get("resources", []))
+            resources, _, _ = self._resolve_client_defaults(request.client.client_id, request.client)
             source = "client defaults" if resources else "no resource configured"
 
         request.resource = resources
@@ -76,15 +128,15 @@ class UserClaimsValidator(OAuth2Validator):
             )
             return accepted
 
-        client_policies = settings.OAUTH2_RESOURCE_POLICIES.get(client_id, {})
-        if not isinstance(client_policies, dict) or any(resource not in client_policies for resource in resources):
+        client_policies = self._resolve_resource_policies(client_id, client)
+        if any(resource not in client_policies for resource in resources):
             logger.warning(
                 "OAuth client %s requested resource indicator(s) not present in its policy",
                 client_id,
             )
             return False
 
-        allowed_scopes = [set(client_policies[resource]) for resource in resources]
+        allowed_scopes = [client_policies[resource] for resource in resources]
         permitted_scopes = set.intersection(*allowed_scopes) if allowed_scopes else set()
         accepted = requested_api_scopes.issubset(permitted_scopes)
         logger.debug(
@@ -116,14 +168,8 @@ class UserClaimsValidator(OAuth2Validator):
         return valid
 
     def get_default_scopes(self, client_id, request, *args, **kwargs):
-        client_defaults = settings.OAUTH2_CLIENT_DEFAULTS.get(client_id, {})
         self._set_inherited_resource(request)
-        if "scopes" in client_defaults:
-            scopes = list(client_defaults["scopes"])
-            source = "client defaults"
-        else:
-            scopes = list(settings.OAUTH2_DEFAULT_SCOPES)
-            source = "global defaults"
+        _, scopes, source = self._resolve_client_defaults(client_id, request.client)
         logger.debug(
             "OAuth client %s resolved %d default scope(s) from %s",
             client_id,
