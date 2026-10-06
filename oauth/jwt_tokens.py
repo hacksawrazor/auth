@@ -3,8 +3,6 @@ from django.conf import settings
 from oauthlib.common import generate_token
 from oauth2_provider.utils import jwk_from_pem
 
-from pyauthservice.constants import DEFAULT_AUDIENCE
-
 def get_token_user(request):
     if getattr(request, "user", ""):
         return request.user.get_username()
@@ -17,8 +15,11 @@ def jwt_access_token_generator(request):
     now = int(time.time())
     exp = now + settings.OAUTH2_PROVIDER.get("ACCESS_TOKEN_EXPIRE_SECONDS", 3600)
 
-    # Default audience
-    audiences = [DEFAULT_AUDIENCE]
+    # RFC 8707 resource indicators become JWT audiences. Unbound legacy clients
+    # use the deployment-configured fallback audience.
+    audiences = getattr(request, "resource", None) or [settings.OAUTH2_DEFAULT_AUDIENCE]
+    if isinstance(audiences, str):
+        audiences = [audiences]
 
     payload = {
         "iss": settings.OAUTH2_PROVIDER["OIDC_ISS_ENDPOINT"],

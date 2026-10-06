@@ -186,6 +186,15 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/login/'
 
+OAUTH2_API_SCOPES = env.json('OAUTH2_API_SCOPES', default={})
+OAUTH2_RESOURCE_POLICIES = env.json('OAUTH2_RESOURCE_POLICIES', default={})
+OAUTH2_CLIENT_DEFAULTS = env.json('OAUTH2_CLIENT_DEFAULTS', default={})
+OAUTH2_DEFAULT_AUDIENCE = env('OAUTH2_DEFAULT_AUDIENCE', default='default-resource-service')
+OAUTH2_DEFAULT_SCOPES = env.list(
+    'OAUTH2_DEFAULT_SCOPES',
+    default=['read', 'write', 'openid', 'offline_access', 'email', 'profile'],
+)
+
 OAUTH2_PROVIDER = {
     'ACCESS_TOKEN_EXPIRE_SECONDS': 3600,
     'REFRESH_TOKEN_EXPIRE_SECONDS': 3600 * 24 * 365,
@@ -195,6 +204,7 @@ OAUTH2_PROVIDER = {
     "REFRESH_TOKEN_GENERATOR": "oauth.jwt_tokens.opaque_refresh_token_generator",
     'OIDC_ENABLED': True,
     'OAUTH2_VALIDATOR_CLASS': 'oauth.validators.UserClaimsValidator',
+    'DEFAULT_SCOPES': OAUTH2_DEFAULT_SCOPES,
     # OIDC RSA private key: prefer raw key in env, then a path in env, then BASE_DIR/oidc_private.pem
     # Set either `OIDC_RSA_PRIVATE_KEY` (PEM content) or `OIDC_PRIVATE_KEY_PATH` (path to PEM file)
     # or place `oidc_private.pem` at the project root.
@@ -207,6 +217,7 @@ OAUTH2_PROVIDER = {
         "offline_access": "Maintain access when the user is not present",
         "email": "Access to the user's email address",
         "profile": "Access to the user's profile information",
+        **OAUTH2_API_SCOPES,
     },
 }
 

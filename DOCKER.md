@@ -82,6 +82,49 @@ fetch('/api/users/', { credentials: 'include' })
 
 Do not expose the session cookie or client secret to browser JavaScript.
 
+### Resource-bound API tokens
+
+The authorization server uses OAuth 2.0 resource indicators (RFC 8707) to bind
+new API tokens to one or more API resource URIs. Configure API scopes and
+client-to-resource permissions in `.env` as JSON. For example:
+
+```text
+OAUTH2_API_SCOPES={"pocketbase:access":"Access to the PocketBase API"}
+OAUTH2_RESOURCE_POLICIES={"nginx-gateway":{"https://pocketbase.example.com/":["pocketbase:access"]}}
+```
+
+Replace the example client ID and URI with the registered OAuth client and the
+canonical HTTPS base URI PocketBase will use as its audience. Configure the
+client to request that `resource` and scope. The requested resource must be
+allowlisted for that client, and resource-specific scopes cannot be issued
+without an allowed resource. The project signs the resource URI into JWT `aud`;
+Django OAuth Toolkit 3.4.1+ stores the resource on the grant/token and returns
+it as `aud` from `/o/introspect/`.
+
+For an existing client that does not send `resource` or `scope`, configure
+`OAUTH2_CLIENT_DEFAULTS` to supply those values. For example:
+
+```text
+OAUTH2_CLIENT_DEFAULTS={"nginx-gateway":{"resources":["https://pocketbase.example.com/"],"scopes":["openid","email","profile","pocketbase:access"]}}
+```
+
+Clients without an entry use `OAUTH2_DEFAULT_AUDIENCE` and
+`OAUTH2_DEFAULT_SCOPES`; their defaults preserve the current legacy audience
+and core scopes. This allows clients to migrate by configuration without
+requiring each client to change its OAuth request immediately. Do not add an
+API scope to global defaults: API scopes should only be defaulted for a client
+that is allowlisted for the matching resource.
+
+Existing requests that omit `resource` retain the legacy
+`default-resource-service` audience. Keep those clients unchanged during
+migration. After deploying the new Toolkit version, run `python manage.py migrate`
+before enabling resource-bound issuance; the Toolkit migration adds resource
+fields to grants, access tokens, and refresh tokens. Migrate clients API by API,
+and do not change the existing default audience until its consumers have moved.
+OAuth2 Proxy versions/configurations differ in whether they can send the RFC
+8707 `resource` parameter, so verify the authorization request and resulting
+token before enabling the corresponding resource policy.
+
 ### React SPA with the same SSO session
 
 Register the SPA as a separate **public** OAuth application. Use the

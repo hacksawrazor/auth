@@ -6,8 +6,7 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework import exceptions
 from cryptography.hazmat.primitives import serialization
 import logging
-
-from pyauthservice.constants import DEFAULT_AUDIENCE
+from oauth2_provider.oauth2_validators import validate_resource_as_url_prefix
 
 logger = logging.getLogger(__name__)
 
@@ -16,6 +15,19 @@ class SSOJWTAuthentication(BaseAuthentication):
     """
     Authenticate requests using JWTs issued by this SSO.
     """
+
+    @staticmethod
+    def _audience_matches(request, payload):
+        audiences = payload.get("aud")
+        if isinstance(audiences, str):
+            audiences = [audiences]
+        if not isinstance(audiences, list) or not all(isinstance(audience, str) for audience in audiences):
+            return False
+        if audiences == [settings.OAUTH2_DEFAULT_AUDIENCE]:
+            return True
+
+        request_uri = request.build_absolute_uri().split("?", 1)[0]
+        return validate_resource_as_url_prefix(request_uri, audiences)
 
     def authenticate(self, request):
         auth_header = request.headers.get("Authorization", "")
@@ -42,7 +54,7 @@ class SSOJWTAuthentication(BaseAuthentication):
                 token,
                 public_key_pem,
                 algorithms=["RS256"],
-                audience=[DEFAULT_AUDIENCE],
+                options={"verify_aud": False},
                 issuer=settings.OAUTH2_PROVIDER["OIDC_ISS_ENDPOINT"],
             )
         except jwt.ExpiredSignatureError:
@@ -51,6 +63,9 @@ class SSOJWTAuthentication(BaseAuthentication):
         except jwt.InvalidTokenError as e:
             logger.error(f"Invalid token: {str(e)}")
             raise exceptions.AuthenticationFailed(f"Invalid token: {str(e)}")
+
+        if not self._audience_matches(request, payload):
+            raise exceptions.AuthenticationFailed("Invalid token audience")
 
         # Get user from the token payload
         User = get_user_model()
