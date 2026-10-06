@@ -10,6 +10,11 @@ def check_oauth_signing_configuration(app_configs, **kwargs):
     try:
         applications = Application.objects.all()
         for application in applications:
+            if application.algorithm == AbstractApplication.NO_ALGORITHM:
+                # OAuth clients used only for APIs such as introspection do not
+                # issue OIDC ID tokens and need no signing algorithm.
+                continue
+
             if application.algorithm not in {
                 AbstractApplication.RS256_ALGORITHM,
                 AbstractApplication.HS256_ALGORITHM,
