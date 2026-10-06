@@ -125,6 +125,15 @@ OAuth2 Proxy versions/configurations differ in whether they can send the RFC
 8707 `resource` parameter, so verify the authorization request and resulting
 token before enabling the corresponding resource policy.
 
+OAuth access- and refresh-token lifetimes can be configured with
+`OAUTH2_ACCESS_TOKEN_EXPIRE_SECONDS` and
+`OAUTH2_REFRESH_TOKEN_EXPIRE_SECONDS`. The refresh lifetime is measured from
+the associated access token's expiry. The default is 365 days, so oauth2-proxy
+sessions older than that can no longer refresh and users must sign in again.
+Increasing the configured lifetime affects refresh tokens still present and
+valid in the database; it cannot restore tokens that have already been revoked
+or removed by token cleanup.
+
 ### React SPA with the same SSO session
 
 Register the SPA as a separate **public** OAuth application. Use the
