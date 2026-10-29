@@ -38,9 +38,11 @@ WORKDIR /app
 # Install only essential runtime packages:
 # - libpq: PostgreSQL C client library
 # - bash: compatibility with entrypoint.sh, CI runner, and developer shell
+# - openssl: certificate/key generation utility used in CI and OIDC testing
 RUN apk add --no-cache \
     libpq \
-    bash
+    bash \
+    openssl
 
 # Clean unnecessary standard library files from base Python
 RUN find /usr/local/lib/python3.11 -type d -name "test" -prune -exec rm -rf {} + 2>/dev/null || true && \
