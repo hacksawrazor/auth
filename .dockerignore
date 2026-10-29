@@ -44,6 +44,10 @@ DOCKER.md
 DOCKER_IMPLEMENTATION_SUMMARY.md
 docker-validate.sh
 oauth2-proxy.env.example
+requirements-dev.txt
+TESTING.md
+IMPROVEMENTS.md
+README.md
 
 # Database
 *.sqlite3
