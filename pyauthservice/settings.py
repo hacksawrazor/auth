@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import environ
-import certifi
 import os
 import logging
 from oauth.scope_catalog import API_SCOPE_CATALOG, DEFAULT_SCOPE_NAMES, SCOPE_CATALOG
@@ -157,36 +156,12 @@ WSGI_APPLICATION = 'pyauthservice.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DB_ENGINE = env('DB_ENGINE', default='sqlite3' if DEBUG else 'postgresql')
-DB_CONN_MAX_AGE = env.int('DB_CONN_MAX_AGE', default=0 if DEBUG else 60)
-POSTGRES_SSLMODE = env('POSTGRES_SSLMODE', default='disable')
-
-if DB_ENGINE == 'sqlite3':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db' / 'db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db' / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': env('POSTGRES_DB', default='hacksaw'),
-            'USER': env('POSTGRES_USER', default='authuser'),
-            'PASSWORD': env('POSTGRES_PASSWORD', default='authpassword'),
-            'HOST': env('POSTGRES_HOST', default='db'),
-            'PORT': env('POSTGRES_PORT', default='5432'),
-            'CONN_MAX_AGE': DB_CONN_MAX_AGE,
-            'CONN_HEALTH_CHECKS': True,
-            'OPTIONS': {
-                'sslmode': POSTGRES_SSLMODE,
-            },
-        },
-    }
-
-    if POSTGRES_SSLMODE == 'verify-full':
-        DATABASES['default']['OPTIONS']['sslrootcert'] = certifi.where()
+}
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
