@@ -14,17 +14,23 @@ python manage.py migrate --noinput
 echo "📦 Collecting static files..."
 python manage.py collectstatic --noinput
 
-# Create superuser if it doesn't exist (optional, for development)
-if [ "$DEBUG" = "True" ]; then
-  python manage.py shell << END
+# Create superuser only once (always runs if first time, marker persists)
+# Uses /app/db/.admin_created so it survives container restarts via existing DB volume
+if [ ! -f /app/db/.admin_created ]; then
+  python manage.py shell << 'END'
 from django.contrib.auth import get_user_model
 User = get_user_model()
 if not User.objects.filter(username='admin').exists():
     User.objects.create_superuser('admin', 'admin@example.com', 'admin')
-    print("✅ Superuser 'admin' created (use in development only!)")
+    print("✅ Superuser 'admin' created")
+    with open('/app/db/.admin_created', 'w') as f:
+        f.write('1')
 else:
-    print("✅ Superuser already exists")
+    print("ℹ️ Superuser 'admin' already exists")
 END
+  echo "✅ Superuser creation process complete"
+else
+  echo "✅ Superuser 'admin' already exists (marker file: /app/db/.admin_created)"
 fi
 
 echo "🚀 Starting PyAuthService..."
